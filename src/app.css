@@ -1,0 +1,27 @@
+/* 全局样式重置 */
+* {
+	box-sizing: border-box;
+}
+
+body {
+	margin: 0;
+	padding: 0;
+	background-color: #fafafa;
+	min-height: 100vh;
+}
+
+/* 去除按钮和链接的默认轮廓 */
+button:focus,
+a:focus {
+	outline: 2px solid #4CAF50;
+	outline-offset: 2px;
+}
+
+/* 提高可访问性 */
+@media (prefers-reduced-motion: reduce) {
+	* {
+		animation-duration: 0.01ms !important;
+		animation-iteration-count: 1 !important;
+		transition-duration: 0.01ms !important;
+	}
+}
