@@ -298,101 +298,230 @@
 <style>
 	.game-container {
 		display: flex;
-		gap: 2rem;
+		gap: 3rem;
 		padding: 2rem;
-		max-width: 1000px;
+		max-width: 1100px;
 		margin: 0 auto;
-		font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+		background: rgba(255, 255, 255, 0.95);
+		border-radius: 20px;
+		box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+		backdrop-filter: blur(10px);
 	}
 
 	.info-panel {
 		flex: 1;
-		min-width: 250px;
+		min-width: 280px;
+		padding: 1rem;
 	}
 
 	.info-panel h1 {
-		margin: 0 0 1.5rem 0;
-		font-size: 2rem;
-		color: #333;
+		margin: 0 0 2rem 0;
+		font-size: 2.5rem;
+		background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+		-webkit-background-clip: text;
+		-webkit-text-fill-color: transparent;
+		background-clip: text;
+		text-align: center;
+		font-weight: 800;
+		text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.1);
 	}
 
 	.scores {
-		margin-bottom: 1.5rem;
+		margin-bottom: 2rem;
+		background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+		padding: 1.5rem;
+		border-radius: 15px;
+		box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
 	}
 
 	.score {
 		display: flex;
 		justify-content: space-between;
-		margin-bottom: 0.5rem;
-		font-size: 1.1rem;
+		margin-bottom: 1rem;
+		font-size: 1.2rem;
+		color: #2c3e50;
+	}
+
+	.score:last-child {
+		margin-bottom: 0;
 	}
 
 	.score-value {
-		font-weight: bold;
-		color: #4CAF50;
+		font-weight: 700;
+		font-size: 1.4rem;
+		background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+		-webkit-background-clip: text;
+		-webkit-text-fill-color: transparent;
+		background-clip: text;
 	}
 
 	.controls {
-		margin-bottom: 1.5rem;
-		color: #666;
+		margin-bottom: 2rem;
+		padding: 1rem;
+		background: rgba(0, 0, 0, 0.05);
+		border-radius: 10px;
 	}
 
 	.controls p {
 		margin: 0.5rem 0;
+		color: #4a5568;
+		font-size: 0.95rem;
+		display: flex;
+		align-items: center;
+		gap: 0.5rem;
+	}
+
+	.controls p::before {
+		content: '▸';
+		color: #667eea;
+		font-weight: bold;
 	}
 
 	.start-button {
-		background-color: #4CAF50;
+		background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
 		color: white;
 		border: none;
-		padding: 0.75rem 1.5rem;
-		font-size: 1rem;
-		border-radius: 5px;
+		padding: 1rem 2rem;
+		font-size: 1.1rem;
+		font-weight: 600;
+		border-radius: 50px;
 		cursor: pointer;
-		transition: background-color 0.3s;
+		transition: all 0.3s ease;
+		box-shadow: 0 4px 15px rgba(102, 126, 234, 0.4);
+		text-transform: uppercase;
+		letter-spacing: 1px;
 	}
 
 	.start-button:hover {
-		background-color: #45a049;
+		transform: translateY(-2px);
+		box-shadow: 0 6px 20px rgba(102, 126, 234, 0.6);
+	}
+
+	.start-button:active {
+		transform: translateY(0);
 	}
 
 	.game-over, .paused {
-		margin-top: 1rem;
+		margin-top: 1.5rem;
+		padding: 1.5rem;
+		background: rgba(255, 255, 255, 0.9);
+		border-radius: 15px;
+		box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+		text-align: center;
 	}
 
 	.game-over h2, .paused h2 {
-		color: #f44336;
 		margin-bottom: 1rem;
+		font-size: 1.8rem;
+	}
+
+	.game-over h2 {
+		background: linear-gradient(135deg, #ff512f 0%, #dd2476 100%);
+		-webkit-background-clip: text;
+		-webkit-text-fill-color: transparent;
+		background-clip: text;
 	}
 
 	.paused h2 {
-		color: #ff9800;
+		background: linear-gradient(135deg, #f7971e 0%, #ffd200 100%);
+		-webkit-background-clip: text;
+		-webkit-text-fill-color: transparent;
+		background-clip: text;
 	}
 
 	.game-board {
 		position: relative;
-		background-color: #f0f0f0;
-		border: 2px solid #333;
-		box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+		background: linear-gradient(to bottom right, #1a1a2e, #16213e);
+		border: none;
+		border-radius: 15px;
+		box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3), inset 0 1px 0 rgba(255, 255, 255, 0.1);
+		overflow: hidden;
+	}
+
+	.game-board::before {
+		content: '';
+		position: absolute;
+		top: 0;
+		left: 0;
+		right: 0;
+		bottom: 0;
+		background-image: 
+			linear-gradient(rgba(255, 255, 255, 0.03) 1px, transparent 1px),
+			linear-gradient(to right, rgba(255, 255, 255, 0.03) 1px, transparent 1px);
+		background-size: 20px 20px;
+		pointer-events: none;
 	}
 
 	.snake-segment {
 		position: absolute;
-		background-color: #4CAF50;
-		border-radius: 3px;
-		transition: all 0.1s;
+		background: linear-gradient(135deg, #11998e 0%, #38ef7d 100%);
+		border-radius: 4px;
+		transition: all 0.1s ease;
+		box-shadow: 0 2px 8px rgba(17, 153, 142, 0.4);
+	}
+
+	.snake-segment::after {
+		content: '';
+		position: absolute;
+		top: 2px;
+		left: 2px;
+		right: 2px;
+		bottom: 2px;
+		background: rgba(255, 255, 255, 0.2);
+		border-radius: 2px;
 	}
 
 	.snake-head {
-		background-color: #2E7D32;
+		background: linear-gradient(135deg, #0f7938 0%, #11998e 100%);
 		z-index: 10;
+		box-shadow: 0 4px 12px rgba(15, 121, 56, 0.6);
+	}
+
+	.snake-head::before {
+		content: '';
+		position: absolute;
+		top: 4px;
+		width: 4px;
+		height: 4px;
+		background: #fff;
+		border-radius: 50%;
+		box-shadow: 0 0 3px rgba(255, 255, 255, 0.8);
+	}
+
+	.snake-head::before {
+		left: 4px;
+	}
+
+	.snake-head::after {
+		content: '';
+		position: absolute;
+		top: 4px;
+		right: 4px;
+		width: 4px;
+		height: 4px;
+		background: #fff;
+		border-radius: 50%;
+		box-shadow: 0 0 3px rgba(255, 255, 255, 0.8);
 	}
 
 	.food {
 		position: absolute;
-		background-color: #f44336;
+		background: linear-gradient(135deg, #fc466b 0%, #3f5efb 100%);
 		border-radius: 50%;
-		animation: pulse 0.8s infinite;
+		animation: pulse 0.8s infinite, rotate 4s linear infinite;
+		box-shadow: 0 4px 15px rgba(252, 70, 107, 0.6);
+	}
+
+	.food::after {
+		content: '';
+		position: absolute;
+		top: 25%;
+		left: 25%;
+		width: 50%;
+		height: 50%;
+		background: rgba(255, 255, 255, 0.3);
+		border-radius: 50%;
+		filter: blur(4px);
 	}
 
 	@keyframes pulse {
@@ -404,6 +533,15 @@
 		}
 		100% {
 			transform: scale(1);
+		}
+	}
+
+	@keyframes rotate {
+		0% {
+			transform: rotate(0deg);
+		}
+		100% {
+			transform: rotate(360deg);
 		}
 	}
 
