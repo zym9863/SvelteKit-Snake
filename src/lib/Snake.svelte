@@ -31,6 +31,7 @@
 	let food: Position = generateFood();
 	let gameRunning = false;
 	let gameOver = false;
+	let gamePaused = false;
 	let score = 0;
 	let highScore = 0;
 	let speed = INITIAL_SPEED;
@@ -114,13 +115,28 @@
 
 	// 处理键盘输入
 	function handleKeyPress(event: KeyboardEvent) {
-		if (!gameRunning || gameOver) {
+		// 阻止空格键的默认行为（滚动页面）
+		if (event.key === ' ') {
+			event.preventDefault();
+		}
+		
+		// 如果游戏结束或者尚未开始，空格键开始游戏
+		if ((!gameRunning && !gamePaused) || gameOver) {
 			if (event.key === ' ') {
 				startGame();
 			}
 			return;
 		}
 
+		// 如果游戏暂停，空格键恢复游戏
+		if (gamePaused) {
+			if (event.key === ' ') {
+				pauseGame();
+			}
+			return;
+		}
+
+		// 游戏运行中的键盘控制
 		const key = event.key.toLowerCase();
 		switch (key) {
 			case 'arrowup':
@@ -163,6 +179,7 @@
 		speed = INITIAL_SPEED;
 		gameRunning = true;
 		gameOver = false;
+		gamePaused = false;
 		if (intervalId !== null) {
 			clearInterval(intervalId);
 		}
@@ -172,11 +189,13 @@
 	// 暂停游戏
 	function pauseGame() {
 		if (!gameOver) {
-			gameRunning = !gameRunning;
-			if (!gameRunning && intervalId !== null) {
+			gamePaused = !gamePaused;
+			if (gamePaused && intervalId !== null) {
 				clearInterval(intervalId);
 				intervalId = null;
-			} else if (gameRunning) {
+				gameRunning = false;
+			} else if (!gamePaused) {
+				gameRunning = true;
 				intervalId = setInterval(moveSnake, speed);
 			}
 		}
@@ -232,16 +251,16 @@
 		</div>
 		<div class="controls">
 			<p>使用 WASD 或方向键控制</p>
-			<p>按空格键 {gameRunning ? '暂停' : gameOver ? '重新开始' : '开始游戏'}</p>
+			<p>按空格键 {gameRunning && !gamePaused ? '暂停' : gameOver ? '重新开始' : '开始游戏'}</p>
 		</div>
-		{#if !gameRunning && !gameOver}
+		{#if !gameRunning && !gameOver && !gamePaused}
 			<button on:click={startGame} class="start-button">开始游戏</button>
 		{:else if gameOver}
 			<div class="game-over">
 				<h2>游戏结束！</h2>
 				<button on:click={startGame} class="start-button">再玩一次</button>
 			</div>
-		{:else if !gameRunning}
+		{:else if gamePaused}
 			<div class="paused">
 				<h2>游戏暂停</h2>
 				<button on:click={pauseGame} class="start-button">继续游戏</button>
